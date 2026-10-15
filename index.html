@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج الشكاوى والاقتراحات - منظمة مارس (MARS)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #0077A3;      /* الأزرق الرئيسي من اللوغو */
+            --dark-blue: #1A4B6E;    /* الأزرق الداكن */
+            --dark: #2F363F;         /* النص الكحلي الرمادي */
+            --accent: #C8A86B;       /* الذهبي من اللوغو */
+            --light-gray: #8C9398;   /* الرمادي الفاتح */
+            --bg-light: #F4F7F9;
+            --success: #28a745;
+            --danger: #dc3545;
+            --info: #0077A3;
+        }
+
+        body {
+            background: linear-gradient(135deg, #F4F7F9 0%, #E2E8EC 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* الهيدر */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(200,168,107,0.15) 0%, transparent 70%);
+            animation: pulse 12s linear infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo-container {
+            background: white;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+            position: relative;
+            z-index: 1;
+            padding: 10px;
+        }
+
+        .logo-container img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+            color: var(--accent);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* شريط التنقل */
+        .breadcrumb {
+            background: var(--dark-blue);
+            padding: 12px 25px;
+            color: white;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb .separator {
+            opacity: 0.6;
+            margin: 0 5px;
+        }
+
+        /* بطاقة النموذج */
+        .card {
+            background: white;
+            border-radius: 0 0 15px 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            border-top: 4px solid var(--accent);
+        }
+
+        .form-title {
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 26px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* عناصر النموذج */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 15px;
+        }
+
+        .form-group label i {
+            color: var(--primary);
+            width: 18px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #E2E8EC;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            background: #FAFAFA;
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 119, 163, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--light-gray);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* زر الإرسال */
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark-blue) 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 119, 163, 0.3);
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary) 100%);
+        }
+
+        /* الرسائل والتحميل */
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info-box {
+            background: #EBF5F9;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-right: 4px solid var(--primary);
+        }
+
+        .info-box i {
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        .info-box p {
+            color: var(--dark);
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* الفوتر */
+        .footer {
+            text-align: center;
+            padding: 25px 0;
+            color: var(--light-gray);
+            font-size: 13px;
+            border-top: 1px solid #E2E8EC;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .card { padding: 25px; }
+            .header h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- الهيدر -->
+        <header class="header">
+            <div class="logo-container">
+                <!-- استبدل الصورة بمسار اللوغو لديك -->
+                <img src="MARS-Logo.png" alt="MARS Logo">
+            </div>
+            <h1>منظمة مارس (MARS)</h1>
+            <p>Multiple Actions to Rebuild Society</p>
+        </header>
+
+        <!-- شريط التنقل -->
+        <div class="breadcrumb">
+            <span><i class="fas fa-home"></i> الرئيسية</span>
+            <span class="separator">›</span>
+            <span><i class="fas fa-shield-alt"></i> نظام المساءلة</span>
+            <span class="separator">›</span>
+            <span style="font-weight: bold; color: var(--accent);"><i class="fas fa-comment-alt"></i> الشكاوى والاقتراحات</span>
+        </div>
+
+        <!-- بطاقة النموذج -->
+        <div class="card">
+            <h2 class="form-title">
+                <i class="fas fa-paper-plane"></i>
+                تقديم شكوى أو اقتراح
+            </h2>
+
+            <div id="successMessage" class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span>تم إرسال نموذجك بنجاح! سيتم مراجعته والتواصل معك.</span>
+            </div>
+
+            <div id="errorMessage" class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.</span>
+            </div>
+
+            <div id="loadingIndicator" class="loading">
+                <div class="spinner"></div>
+                <p>جاري معالجة الشكوى/الاقتراح بالذكاء الاصطناعي والإرسال...</p>
+            </div>
+
+            <!-- ملاحظة: استبدل رابط ACTION برابط Google Apps Script الخاِص بك -->
+            <form id="complaintForm" action="https://script.google.com/macros/s/AKfycbw93uKdHt2sxATWqExTEoo27ZRXqYfJYK7MRiwjUlqCEcjHGHp2Xf3pq7AC_yDub2a3sw/exec" method="POST" target="hiddenFrame">
+                
+                <!-- الاسم الكامل -->
+                <div class="form-group">
+                    <label for="fullName"><i class="fas fa-user"></i> الاسم الكامل:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="أدخل اسمك الثلاثي" required>
+                    <div class="hint"><i class="fas fa-info-circle"></i> يمكنك ترك الاسم فارغاً إذا كنت تفضل عدم الكشف عن هويتك.</div>
+                </div>
+
+                <!-- رقم الهاتف -->
+                <div class="form-group">
+                    <label for="phone"><i class="fas fa-phone-alt"></i> رقم الهاتف / الواتساب:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="05xxxxxxxx" required>
+                </div>
+
+                <!-- الموقع -->
+                <div class="form-group">
+                    <label for="location"><i class="fas fa-map-marker-alt"></i> الموقع / المشروع:</label>
+                    <input type="text" id="location" name="location" placeholder="المدينة، الحي، أو اسم المركز/المشروع" required>
+                </div>
+
+                <!-- التفاصيل (يتم تحليلها ذكائياً لتحديد ما إذا كانت شكوى حساسة، برامجية، أو اقتراح) -->
+                <div class="form-group">
+                    <label for="details"><i class="fas fa-file-alt"></i> تفاصيل الشكوى أو الاقتراح:</label>
+                    <textarea id="details" name="details" rows="5" placeholder="اشرح الشكوى أو الاقتراح بالتفصيل..." required></textarea>
+                    <div class="hint"><i class="fas fa-robot"></i> يتم تصنيف الطلب (شكوى حساسة / برامجية / اقتراح) تلقائياً عبر نظام التصنيف الذكي فور الإرسال.</div>
+                </div>
+
+                <!-- الإجراء المتوقع -->
+                <div class="form-group">
+                    <label for="expectedAction"><i class="fas fa-clipboard-list"></i> الإجراء المتوقع من المنظمة:</label>
+                    <textarea id="expectedAction" name="expectedAction" rows="3" placeholder="ما هو الحل أو الإجراء الذي تتوقعه منا؟" required></textarea>
+                </div>
+
+                <!-- زر الإرسال -->
+                <button type="submit" id="submitButton" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    إرسال الطلب
+                </button>
+            </form>
+
+            <div class="info-box">
+                <i class="fas fa-user-shield"></i>
+                <div>
+                    <strong>التزام الحماية والسرية</strong>
+                    <p>تلتزم منظمة MARS بأعلى معايير السرية والنزاهة في التعامل مع كافة البلاغات والشكاوى وتضمن حماية المُبلغين.</p>
+                </div>
+            </div>
+        </div>
+
+        <iframe name="hiddenFrame" style="display: none;"></iframe>
+
+        <footer class="footer">
+            <div>© 2026 منظمة مارس (MARS). جميع الحقوق محفوظة.</div>
+            <div style="margin-top: 8px;">قسم الحماية والمساءلة والتعلم (MEAL)</div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('complaintForm');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const submitButton = document.getElementById('submitButton');
+            const hiddenFrame = document.getElementsByName('hiddenFrame')[0];
+
+            form.addEventListener('submit', function() {
+                loadingIndicator.style.display = 'block';
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.6';
+            });
+
+            hiddenFrame.addEventListener('load', function() {
+                loadingIndicator.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+                
+                successMessage.style.display = 'block';
+                form.reset();
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 6000);
+            });
+        });
+    </script>
+</body>
+</html>
